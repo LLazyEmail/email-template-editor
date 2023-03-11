@@ -1,9 +1,11 @@
+// -------
 // const { getFullHtml } = require("./getFullHtml");
 
+// NOTE regexp for finding {{href}} {{other}}
 // const regexp = /{{[A-Za-z]{0,}}}/g;
-
 // const result = getFullHtml().match(regexp);
 // console.log("result", result);
+// --------
 
 const treeData = [
   {
@@ -47,10 +49,12 @@ const treeData = [
           {
             title: "{{anotherBlock}}",
             value: "{{href}}{{text}}{{image}}",
-            children: [{
-              title: "{{href}}",
-              value: "https://example.com"
-            }],
+            children: [
+              {
+                title: "{{href}}",
+                value: "https://example.com",
+              },
+            ],
           },
         ],
       },
@@ -59,7 +63,6 @@ const treeData = [
 ];
 
 const getValue = (children, parentValue) => {
-  //   console.log("call", treeData);
   if (!children?.length) {
     return "";
   }
@@ -74,23 +77,11 @@ const getValue = (children, parentValue) => {
     }
 
     const value = getValue(item.children, item.value);
-    console.log("value", value);
     parentValueTmp = parentValueTmp.replace(item.title, value);
   });
 
   return parentValueTmp;
 
-  //   return getValue(treeData.children);
-  //   let value = treeData.value;
-
-  //   treeData.forEach((item) => {
-  //     value = treeData.value.replace(item.title, item.value);
-  //   });
-
-  //   console.log("value", value);
-
-  //   return value;
-  // .match(regexp);
 };
 
 console.log(getValue(treeData[0].children, treeData[0].value));
