@@ -26,7 +26,8 @@ const treeData = [
         title: "{{items}}",
         key: "0-0-0",
         value: `{{oneBlock}}
-        {{twoBlocks}}`,
+        {{twoBlocks}}
+        {{anotherBlock}}`,
         children: [
           {
             title: "{{oneBlock}}",
@@ -42,6 +43,14 @@ const treeData = [
             </div>`,
             key: "0-0-0-1",
             children: [],
+          },
+          {
+            title: "{{anotherBlock}}",
+            value: "{{href}}{{text}}{{image}}",
+            children: [{
+              title: "{{href}}",
+              value: "https://example.com"
+            }],
           },
         ],
       },
@@ -59,12 +68,14 @@ const getValue = (children, parentValue) => {
 
   children.forEach((item) => {
     if (!item.children?.length) {
-      parentValueTmp.replace(item.title, item.value);
+      parentValueTmp = parentValueTmp.replace(item.title, item.value);
 
       return;
     }
 
-    // getValue(item.children, parentValueTmp);
+    const value = getValue(item.children, item.value);
+    console.log("value", value);
+    parentValueTmp = parentValueTmp.replace(item.title, value);
   });
 
   return parentValueTmp;
@@ -82,4 +93,4 @@ const getValue = (children, parentValue) => {
   // .match(regexp);
 };
 
-console.log(JSON.stringify(getValue(treeData[0].children, treeData[0].value)));
+console.log(getValue(treeData[0].children, treeData[0].value));
